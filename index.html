@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landscape Intelligence</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: auto;
+            padding: 40px 20px;
+        }
+
+        .landing-container {
+            max-width: 800px;
+            text-align: center;
+        }
+
+        .landing-title {
+            font-family: var(--font-display);
+            font-size: 56px;
+            font-weight: 400;
+            color: var(--cyan-9-deep);
+            letter-spacing: -0.03em;
+            margin-bottom: 8px;
+        }
+
+        .landing-subtitle {
+            font-family: var(--font-display);
+            font-size: 24px;
+            font-style: italic;
+            color: var(--cyan-7-earth);
+            margin-bottom: 40px;
+        }
+
+        .landing-description {
+            font-family: var(--font-body);
+            font-size: 18px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 48px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .landing-stats {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            margin-bottom: 48px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: var(--font-mono);
+            font-size: 48px;
+            font-weight: 500;
+            color: var(--cyan-7-earth);
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-bottom: 60px;
+        }
+
+        .cta-btn {
+            padding: 16px 32px;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .cta-primary {
+            background: var(--cyan-9-deep);
+            color: white;
+            border: 2px solid var(--cyan-9-deep);
+        }
+
+        .cta-primary:hover {
+            background: var(--cyan-8-indigenous);
+            border-color: var(--cyan-8-indigenous);
+        }
+
+        .cta-secondary {
+            background: transparent;
+            color: var(--cyan-7-earth);
+            border: 2px solid var(--cyan-7-earth);
+        }
+
+        .cta-secondary:hover {
+            background: var(--cyan-7-earth);
+            color: white;
+        }
+
+        .cyanometer-bar {
+            display: flex;
+            height: 8px;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto 24px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .cyanometer-segment {
+            flex: 1;
+        }
+
+        .categories-preview {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .category-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .category-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .footer-note {
+            margin-top: 60px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .footer-note a {
+            color: var(--cyan-6-cybernetics);
+            text-decoration: none;
+        }
+
+        .footer-note a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="landing-container">
+        <h1 class="landing-title">Landscape Intelligence</h1>
+        <p class="landing-subtitle">A Networked Timeline of Planetary Epistemologies</p>
+
+        <p class="landing-description">
+            An interactive visualization mapping 4.5 billion years of landscape intelligence—from deep time geological processes through Indigenous epistemologies to contemporary Earth system science. Explore connections across temporal scales, spatial interfaces, and modes of knowing.
+        </p>
+
+        <div class="landing-stats">
+            <div class="stat">
+                <div class="stat-number">51</div>
+                <div class="stat-label">Entries</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">9</div>
+                <div class="stat-label">Categories</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">4.5B</div>
+                <div class="stat-label">Years Span</div>
+            </div>
+        </div>
+
+        <div class="cta-buttons">
+            <a href="network.html" class="cta-btn cta-primary">Explore Network</a>
+            <a href="about.html" class="cta-btn cta-secondary">About</a>
+        </div>
+
+        <div class="cyanometer-bar">
+            <div class="cyanometer-segment" style="background: #003153"></div>
+            <div class="cyanometer-segment" style="background: #1a4780"></div>
+            <div class="cyanometer-segment" style="background: #2e5984"></div>
+            <div class="cyanometer-segment" style="background: #4a7c9b"></div>
+            <div class="cyanometer-segment" style="background: #6b9eb8"></div>
+            <div class="cyanometer-segment" style="background: #8fb9cf"></div>
+            <div class="cyanometer-segment" style="background: #b3d4e5"></div>
+            <div class="cyanometer-segment" style="background: #d4e8f5"></div>
+            <div class="cyanometer-segment" style="background: #e8f4fc"></div>
+        </div>
+
+        <div class="categories-preview">
+            <div class="category-item">
+                <span class="category-dot" style="background: #003153"></span>
+                <span>Deep Time</span>
+            </div>
+            <div class="category-item">
+                <span class="category-dot" style="background: #1a4780"></span>
+                <span>Indigenous Epistemologies</span>
+            </div>
+            <div class="category-item">
+                <span class="category-dot" style="background: #2e5984"></span>
+                <span>Earth System Science</span>
+            </div>
+            <div class="category-item">
+                <span class="category-dot" style="background: #4a7c9b"></span>
+                <span>Cybernetics & Systems</span>
+            </div>
+            <div class="category-item">
+                <span class="category-dot" style="background: #6b9eb8"></span>
+                <span>Landscape Architecture</span>
+            </div>
+            <div class="category-item">
+                <span class="category-dot" style="background: #8fb9cf"></span>
+                <span>Critical Materials</span>
+            </div>
+            <div class="category-item">
+                <span class="category-dot" style="background: #b3d4e5"></span>
+                <span>Environmental Governance</span>
+            </div>
+            <div class="category-item">
+                <span class="category-dot" style="background: #d4e8f5"></span>
+                <span>Contemporary Theory</span>
+            </div>
+            <div class="category-item">
+                <span class="category-dot" style="background: #e8f4fc"></span>
+                <span>Ancient & Classical</span>
+            </div>
+        </div>
+
+        <p class="footer-note">
+            Developed by Rose Borthwick | Harvard Graduate School of Design<br>
+            Part of the <a href="#">Design Pedagogies for the Planetary Student</a> framework
+        </p>
+    </div>
+</body>
+</html>

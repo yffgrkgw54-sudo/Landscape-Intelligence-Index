@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landscape Intelligence | Network Visualization</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="header">
+                <h1>Landscape Intelligence</h1>
+                <p class="subtitle">Network Visualization</p>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="nav-tabs">
+                <button class="nav-tab active" data-view="network">Network</button>
+                <button class="nav-tab" data-view="radial">Radial</button>
+                <button class="nav-tab" data-view="timeline">Timeline</button>
+            </nav>
+
+            <!-- Search -->
+            <div class="search-container">
+                <input type="text" id="search-input" class="search-input" placeholder="Search entries...">
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <span>Total:</span>
+                    <span class="stat-value" id="stat-total">51</span>
+                </div>
+                <div class="stat-item">
+                    <span>Visible:</span>
+                    <span class="stat-value" id="stat-visible">51</span>
+                </div>
+                <div class="stat-item">
+                    <span>Anchors:</span>
+                    <span class="stat-value" id="stat-anchors">0</span>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="filters-scroll">
+                <div class="sidebar-section">
+                    <h3>Thematic Category</h3>
+                    <div id="category-filters" class="checkbox-group"></div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3>Source</h3>
+                    <div id="source-filters" class="checkbox-group"></div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3>Indeterminacy Position</h3>
+                    <div id="indeterminacy-filters" class="checkbox-group"></div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3>Temporal Phase</h3>
+                    <div id="temporal-filters" class="checkbox-group"></div>
+                </div>
+
+                <div class="sidebar-section">
+                    <button id="reset-filters" class="btn btn-secondary" style="width: 100%">Reset Filters</button>
+                    <button id="add-entry-btn" class="btn btn-primary" style="width: 100%; margin-top: 8px">+ Add Entry</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Toolbar -->
+            <div class="toolbar">
+                <div class="toolbar-group">
+                    <span class="toolbar-label">Connections:</span>
+                    <button class="toolbar-btn active" data-connection="thematic">Thematic</button>
+                    <button class="toolbar-btn active" data-connection="citation">Citation</button>
+                    <button class="toolbar-btn" data-connection="sphere">Sphere</button>
+                    <button class="toolbar-btn" data-connection="element">Element</button>
+                    <button class="toolbar-btn" data-connection="indeterminacy">Indeterminacy</button>
+                </div>
+                <div class="toolbar-group">
+                    <span class="toolbar-label">Color by:</span>
+                    <button class="toolbar-btn active" data-color-mode="category">Category</button>
+                    <button class="toolbar-btn" data-color-mode="temporal">Temporal Depth</button>
+                </div>
+                <div class="toolbar-group" style="margin-left: auto;">
+                    <button class="toolbar-btn" onclick="exportData()">Export CSV</button>
+                    <a href="about.html" class="toolbar-btn">About</a>
+                </div>
+            </div>
+
+            <!-- Network View -->
+            <div class="viz-container" id="network-canvas"></div>
+
+            <!-- Timeline View -->
+            <div class="timeline-container" style="display: none;">
+                <div class="timeline-content"></div>
+            </div>
+
+            <!-- Radial View -->
+            <div class="radial-container" style="display: none;" id="radial-canvas"></div>
+
+            <!-- Detail Panel -->
+            <div class="detail-panel">
+                <div class="detail-header">
+                    <button class="detail-close">&times;</button>
+                    <div class="detail-year" id="detail-year"></div>
+                    <h2 class="detail-title" id="detail-title"></h2>
+                    <div class="detail-location" id="detail-location"></div>
+                </div>
+                <div class="detail-content">
+                    <p class="detail-description" id="detail-description"></p>
+                    <div class="detail-citation" id="detail-citation"></div>
+                    <div class="detail-codes" id="detail-codes"></div>
+                    <div class="detail-criteria" id="detail-criteria"></div>
+                    <div class="detail-keywords" id="detail-keywords"></div>
+                </div>
+            </div>
+
+            <!-- Legend -->
+            <div class="legend">
+                <h4>Cyanometer Scale</h4>
+                <div class="legend-item">
+                    <span class="legend-dot" style="background: #003153"></span>
+                    <span>Deep Time</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot" style="background: #1a4780"></span>
+                    <span>Indigenous Epistemologies</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot" style="background: #2e5984"></span>
+                    <span>Earth System Science</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot" style="background: #4a7c9b"></span>
+                    <span>Cybernetics & Systems</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot" style="background: #6b9eb8"></span>
+                    <span>Landscape Architecture</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot" style="background: #8fb9cf"></span>
+                    <span>Critical Materials</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot" style="background: #b3d4e5"></span>
+                    <span>Environmental Governance</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot" style="background: #d4e8f5"></span>
+                    <span>Contemporary Theory</span>
+                </div>
+                <h4 style="margin-top: 16px;">Connections</h4>
+                <div class="legend-item">
+                    <span class="legend-line" style="background: var(--connection-citation)"></span>
+                    <span>Citation/Explicit</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-line dashed"></span>
+                    <span>Thematic</span>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Entry Modal -->
+    <div class="modal-overlay" id="add-entry-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Add New Entry</h2>
+                <button class="detail-close modal-close">&times;</button>
+            </div>
+            <form id="add-entry-form">
+                <div class="modal-content">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="entry-year">Year</label>
+                            <input type="text" id="entry-year" name="year" required placeholder="e.g., 2024 or Continuous">
+                        </div>
+                        <div class="form-group">
+                            <label for="entry-sortkey">Sort Key (numeric)</label>
+                            <input type="number" id="entry-sortkey" name="sortKey" placeholder="e.g., 2024 or -10000">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="entry-title">Title</label>
+                        <input type="text" id="entry-title" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="entry-location">Location</label>
+                        <input type="text" id="entry-location" name="location" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="entry-description">Description</label>
+                        <textarea id="entry-description" name="description" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="entry-keywords">Keywords (comma-separated)</label>
+                        <input type="text" id="entry-keywords" name="keywords" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="entry-citation">Citation</label>
+                        <input type="text" id="entry-citation" name="citation" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="entry-category">Category</label>
+                            <select id="entry-category" name="category" required>
+                                <option value="DT">Deep Time</option>
+                                <option value="IE">Indigenous Epistemologies</option>
+                                <option value="ES">Earth System Science</option>
+                                <option value="CS">Cybernetics & Systems</option>
+                                <option value="LA">Landscape Architecture</option>
+                                <option value="CM">Critical Materials & Extraction</option>
+                                <option value="EG">Environmental Governance</option>
+                                <option value="CT">Contemporary Theory</option>
+                                <option value="AC">Ancient & Classical</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="entry-sphere">Sphere Interface</label>
+                            <select id="entry-sphere" name="sphereInterface" required>
+                                <option value="LITHO-GEO">LITHO-GEO</option>
+                                <option value="BIO-GEO">BIO-GEO</option>
+                                <option value="BIO-ATMO">BIO-ATMO</option>
+                                <option value="BIO-BIO">BIO-BIO</option>
+                                <option value="BIO-LITHO">BIO-LITHO</option>
+                                <option value="ATMO-BIO">ATMO-BIO</option>
+                                <option value="ATMO-TECHNO">ATMO-TECHNO</option>
+                                <option value="TECHNO-BIO">TECHNO-BIO</option>
+                                <option value="TECHNO-GEO">TECHNO-GEO</option>
+                                <option value="TECHNO-HYDRO">TECHNO-HYDRO</option>
+                                <option value="TECHNO-LITHO">TECHNO-LITHO</option>
+                                <option value="TECHNO-TECHNO">TECHNO-TECHNO</option>
+                                <option value="TECHNO-ATMO">TECHNO-ATMO</option>
+                                <option value="HYDRO-BIO">HYDRO-BIO</option>
+                                <option value="HYDRO-TECHNO">HYDRO-TECHNO</option>
+                                <option value="LITHO-TECHNO">LITHO-TECHNO</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="entry-element">Element Function</label>
+                            <select id="entry-element" name="elementFunction" required>
+                                <option value="ALL-CONCENTRATION">ALL-CONCENTRATION</option>
+                                <option value="ALL-DISPERSION">ALL-DISPERSION</option>
+                                <option value="ALL-CYCLING">ALL-CYCLING</option>
+                                <option value="ALL-MOBILIZATION">ALL-MOBILIZATION</option>
+                                <option value="CARBON-CYCLING">CARBON-CYCLING</option>
+                                <option value="CARBON-SEQUESTRATION">CARBON-SEQUESTRATION</option>
+                                <option value="CARBON-SIGNALING">CARBON-SIGNALING</option>
+                                <option value="CARBON-MOBILIZATION">CARBON-MOBILIZATION</option>
+                                <option value="INFORMATION-MEMORY">INFORMATION-MEMORY</option>
+                                <option value="INFORMATION-SIGNALING">INFORMATION-SIGNALING</option>
+                                <option value="INFORMATION-COORDINATION">INFORMATION-COORDINATION</option>
+                                <option value="INFORMATION-MODELLING">INFORMATION-MODELLING</option>
+                                <option value="WATER-CYCLING">WATER-CYCLING</option>
+                                <option value="FIRE-CYCLING">FIRE-CYCLING</option>
+                                <option value="SOIL-MEMORY">SOIL-MEMORY</option>
+                                <option value="ENERGY-SIGNALING">ENERGY-SIGNALING</option>
+                                <option value="ENERGY-CYCLING">ENERGY-CYCLING</option>
+                                <option value="BIOTA-CYCLING">BIOTA-CYCLING</option>
+                                <option value="BIOTA-DIVERSIFICATION">BIOTA-DIVERSIFICATION</option>
+                                <option value="OXYGEN-CYCLING">OXYGEN-CYCLING</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="entry-indeterminacy">Indeterminacy Position</label>
+                            <select id="entry-indeterminacy" name="indeterminacy" required>
+                                <option value="CLEAR-COHERENT">Clear Coherent (5)</option>
+                                <option value="SEARCH-PROMISING">Search Promising (4)</option>
+                                <option value="PHASE-TRANSITION">Phase Transition (3)</option>
+                                <option value="SEARCH-DISSIPATING">Search Dissipating (2)</option>
+                                <option value="CLEAR-DISSIPATION">Clear Dissipation (1)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="entry-temporal">Temporal Phase</label>
+                        <select id="entry-temporal" name="temporalPhase" required>
+                            <option value="PRE-EXTRACTION">PRE-EXTRACTION</option>
+                            <option value="ACTIVE-MOBILIZATION">ACTIVE-MOBILIZATION</option>
+                            <option value="POST-DISPERSAL">POST-DISPERSAL</option>
+                            <option value="RECOVERY-ATTEMPT">RECOVERY-ATTEMPT</option>
+                            <option value="SYSTEM-TRANSITION">SYSTEM-TRANSITION</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Five Criteria (1-5)</label>
+                        <div class="form-row">
+                            <input type="number" name="closure" min="1" max="5" placeholder="Closure" value="3">
+                            <input type="number" name="metabolic" min="1" max="5" placeholder="Metabolic" value="3">
+                            <input type="number" name="timescale" min="1" max="5" placeholder="Timescale" value="3">
+                            <input type="number" name="pattern" min="1" max="5" placeholder="Pattern" value="3">
+                            <input type="number" name="recognition" min="1" max="5" placeholder="Recognition" value="3">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="isAnchor">
+                            <span>Mark as anchor node (theoretical foundation)</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary modal-cancel">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Entry</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
